@@ -33,7 +33,7 @@ export const createTaskController = async (
   const task: google.cloud.tasks.v2.ITask = {
     httpRequest: {
       httpMethod: "POST",
-      url: `${config.url}`,
+      url: `${config.url}/handle`,
       body: Buffer.from(body.payload).toString("base64"),
     },
     scheduleTime: body.inSeconds + Date.now() / 1000,
