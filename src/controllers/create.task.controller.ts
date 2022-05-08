@@ -34,10 +34,7 @@ export const createTaskController = async (
     httpRequest: {
       httpMethod: "POST",
       url: `${config.url}/handle`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: body.payload,
+      body: Buffer.from(JSON.stringify(body.payload)).toString("base64"),
     },
     scheduleTime: body.inSeconds + Date.now() / 1000,
   };
