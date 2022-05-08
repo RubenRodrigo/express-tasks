@@ -12,15 +12,16 @@ export const createTaskController = async (
 ): Promise<Response> => {
   // Instantiates a client.
   const { body } = req;
+  let payload = {
+    name: "Hello Rodrigo!!",
+  };
 
   if (!body.inSeconds) {
     body.inSeconds = 60;
   }
 
-  if (!body.payload) {
-    body.payload = {
-      name: "Hello Rodrigo!!",
-    };
+  if (body.payload) {
+    payload = body.payload;
   }
 
   const client = new CloudTasksClient();
@@ -36,10 +37,10 @@ export const createTaskController = async (
       headers: {
         "Content-Type": "application/json",
       },
-      url: `${config.url}/handle`,
-      body: Buffer.from(JSON.stringify(body.payload)).toString("base64"),
+      url: `https://warm-atoll-32606.herokuapp.com/handle`,
+      body: Buffer.from(JSON.stringify(payload)).toString("base64"),
     },
-    scheduleTime: body.inSeconds + Date.now() / 1000,
+    scheduleTime: { seconds: body.inSeconds + Date.now() / 1000 },
   };
 
   // Send create task request.
@@ -55,6 +56,6 @@ export const createTaskController = async (
 
   return res.status(201).json({
     result: "The task was sucessfully created",
-    body: body,
+    body: payload,
   });
 };
